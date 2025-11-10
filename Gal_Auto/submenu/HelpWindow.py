@@ -1,0 +1,155 @@
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QTextBrowser, QDesktopWidget
+
+class HelpWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def center(self):
+        '''将窗口移动至屏幕中央'''
+        qr = self.frameGeometry()  # 获取窗口的框架几何信息
+        cp = QDesktopWidget().availableGeometry().center()  # 获取屏幕中心点
+        qr.moveCenter(cp)  # 将窗口框架中心移动到屏幕中心
+        self.move(qr.topLeft())  # 窗口移动到新的左上角坐标
+
+    def initUI(self):
+        '''主窗口'''
+        self.resize(1200, 800)
+        self.center()
+        self.setWindowTitle('帮助文档')
+
+        # 创建一个中央部件
+        central_widget = QWidget()
+        self.setCentralWidget(central_widget)
+
+        # 创建布局
+        layout = QVBoxLayout()
+
+        # 创建帮助浏览器
+        self.help_browser = QTextBrowser()
+        self.help_browser.setHtml("""
+        <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帮助文档</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        p, li {
+            margin: 10px 0;
+        }
+        .notice {
+            color: #d9534f;
+            font-weight: bold;
+        }
+        .email {
+            color: #0275d8;
+        }
+    </style>
+</head>
+<body>
+    <h1>帮助文档</h1>
+
+    <h2>1. 关于软件</h2>
+    <p>本软件基于 <b>Python</b> 的 <b>PyQt5</b> 开发，用于控制 <b>Gap Light Analyzer (GLA)</b> 自动计算叶面积指数（LAI）。特别适用于需要长期监测树种叶面积指数变化的场景，能够通过固定拍摄点位和角度，在注册参数后批量控制 GLA 计算鱼眼相机拍摄的树冠图片的叶面积指数，从而将研究人员从枯燥的手动操作中解放出来。</p>
+    <p><b>GLA 下载地址：</b><a href="#" target="_blank">https://www.caryinstitute.org/science/our-scientists/dr-charles-d-canham/gap-light-analyzer-gla</a></p>
+
+    <h3>基本原理</h3>
+    <ol>
+        <li>截取软件操作过程中需要识别的图像和点击位置作为模板图。</li>
+        <li>使用 <b>OpenCV</b> 库识别目标图片在显示器中的位置。</li>
+        <li>通过 <b>PyAutoGUI</b> 库模拟键盘敲击和鼠标移动，实现自动控制。</li>
+    </ol>
+
+    <h3>注意事项</h3>
+    <ul>
+        <li>确保在软件控制 GLA 计算过程中，<span class="notice">GLA 界面始终位于显示器顶部</span>，不被其他窗口覆盖。</li>
+        <li>确保运行过程中，<span class="notice">键盘和鼠标不被意外触动</span>，以免导致自动操作失败。</li>
+        <li>确保 GLA 界面与模板图一致。可通过软件中的“查看模版图”功能进行对比。若不一致，请在软件的 <code>mode_photo</code> 文件夹中修改模板图。</li>
+        <li>修改模板图时，需确保模板图点击对象位于图像正中央，且模板图的文件名不得更改。</li>
+    </ul>
+
+    <h2>2. 软件教程</h2>
+    <p>本软件包含 5 个子菜单，对应 5 个独立窗口。以下依次介绍各菜单的作用：</p>
+
+    <h3>(1) 文件子菜单</h3>
+    <ul>
+        <li><b>工作图片格式：</b>选择需要计算的图片格式，例如 jpg、png 等。</li>
+        <li><b>工作文件夹：</b>选择存放待计算图片的文件夹路径。</li>
+        <li><b>输出文件：</b>选择输出结果的路径和文件名。</li>
+    </ul>
+
+    <h3>(2) 注册子菜单</h3>
+    <ul>
+        <li>
+            <b>输入图片注册参数：</b>  
+            <p>打开注册参数管理窗口，通过输入图片 ID 和注册参数来完成图片注册。</p>
+            <p><b>图片 ID：</b>待计算图片的文件名（包括扩展名）。</p>
+            <p><b>注册参数格式：</b><code>[[1893, 2609], [2022, 545], 0]</code>。括号中的内容分别表示：</p>
+            <ul>
+                <li><b>Initial Point：</b>起始点坐标</li>
+                <li><b>Final Point：</b>结束点坐标</li>
+                <li><b>0：</b>默认参数</li>
+            </ul>
+        </li>
+        <li>输入图片 ID 和注册参数后，点击“保存”完成注册。注册结果会显示在下方的文本框中。</li>
+        <li>若需修改已注册的参数，使用相同图片 ID 覆盖保存即可。</li>
+    </ul>
+
+    <h3>(3) 查看子菜单</h3>
+    <ul>
+        <li><b>查看已注册参数：</b>点击“展示”按钮可查看所有已注册的图片参数。</li>
+        <li><b>查看模版图：</b>点击“查看”按钮可显示模板图，并与本地软件中的模板对比，检查是否可以正常识别。</li>
+    </ul>
+
+    <h3>(4) 启动子菜单</h3>
+    <ul>
+        <li><b>启动软件计算：</b>
+            <p>点击“启动”按钮，自动控制 GLA 计算叶面积指数。</p>
+            <p><b>激活条件：</b>文件子菜单中“工作图片格式”“工作文件夹”和“输出文件”已正确设置。</p>
+            <p>支持两种启动 GLA 的方式：</p>
+            <ul>
+                <li><b>方式一：</b>通过 GLA 的执行文件启动。</li>
+                <li><b>方式二：</b>通过自动点击任务栏固定的快捷方式启动（需确保 GLA 快捷方式已固定在任务栏中）。</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>(5) 帮助子菜单</h3>
+    <ul>
+        <li><b>帮助文档：</b>点击即可查看本帮助文档。</li>
+    </ul>
+
+    <h2>3. 其他</h2>
+    <p>由于涉及自动控制，使用过程中需格外小心，尽量避免触碰电脑，以免干扰软件运行。</p>
+
+    <p><b>开发者声明：</b></p>
+    <p>本软件由个人开发，可能存在不足或问题，敬请谅解。如有任何问题或改进建议，欢迎通过邮箱联系开发者：</p>
+    <p class="email">邮箱：qingqiu760@gmail.com</a></p>
+</body>
+</html>
+        """)
+
+        # 将部件添加到布局
+        layout.addWidget(self.help_browser)
+
+        # 将布局设置为中央部件的布局
+        central_widget.setLayout(layout)
+
+if __name__ == "__main__":
+    app = QApplication([])
+    help_window = HelpWindow()
+    help_window.show()
+    app.exec_()
