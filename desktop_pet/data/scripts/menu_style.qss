@@ -1,0 +1,48 @@
+/* 整个右键菜单 QMenu 的整体样式 */
+QMenu {
+    background: #b0d0f1;           
+    border: 2px solid transparent;     /* 菜单边框的颜色与宽度 */
+    padding: 3px;                      /* 菜单内部内容与边框之间的间距 */
+    font-size: 14pt;                   /* 菜单文字大小 */
+    font-family: "SimHei";             /* 菜单文字字体 */
+    color: white;                    /* 菜单项默认文字颜色 */
+    font-weight: 900;                  /* 菜单项文字加粗 */
+}
+
+/* QMenu 中每一项（Action 转换来的 item） */
+QMenu::item {
+    background-color: #6faeed;
+    padding: 12px 32px;                /* 菜单项的内边距：上下 | 左右 */
+    border-radius: 12px;               /* 菜单项本身的圆角 */
+    margin: 4px 8px;                   /* 菜单项与其他项目之间的外边距 */
+}
+
+/* 菜单里的分割线 */
+QMenu::separator {
+    height: 1px;                       /* 分割线高度 */
+    background: transparent;           /* 分割线颜色（透明就等于隐藏） */
+    margin: 6px 12px;                  /* 分割线上下左右的外边距 */
+}
+
+/* 菜单项前的小勾或图标（indicator） */
+QMenu::indicator {
+    width: 0px;                        /* 宽度设置为 0，等于隐藏左侧小勾 */
+    height: 0px;                       /* 高度设为 0 */
+}
+
+/* 鼠标悬停在菜单项上时的样式 */
+QMenu::item:selected {
+    color: #fc94b3;                   /* 鼠标悬停时的文字颜色 */
+    background-color: #4a90e2;        /* 鼠标悬停时的背景颜色 */
+    font-size: 16pt;                    /* 鼠标悬停时的文字大小 */
+    padding: 12px 24px;                 /* 鼠标悬停时的内边距 */
+}
+
+
+
+
+
+
+
+
+
