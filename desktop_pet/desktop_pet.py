@@ -21,7 +21,7 @@ class DesktopPet(QWidget):
         self.base_size = (498, 707)
         self.current_size = self.base_size
 
-        self.default_pictures = glob(r'data\pets\Sigewinne\loop\*.gif')
+        self.default_pictures = glob(r'data\pets\loop\*.gif')
         with open(r"data\scripts\menu_style.qss", "r", encoding="utf-8") as f:
             qss = f.read()
         self.setStyleSheet(qss)
@@ -159,7 +159,7 @@ class DesktopPet(QWidget):
             self.is_hidden = False
             self.timer.start()
             # 恢复默认动作
-            self.default_pictures = Config.get_pictures(r'data\pets\Sigewinne\loop\*.gif')
+            self.default_pictures = Config.get_pictures(r'data\pets\loop\*.gif')
             self.n = -1
             self.default_count = 0
 
@@ -209,7 +209,7 @@ class DesktopPet(QWidget):
 
         if not self.is_hidden and self.n == len(pics) - 1:
             self.default_count += 1
-            self.default_pictures = Config.get_pictures(r'data\pets\Sigewinne\loop\*.gif')
+            self.default_pictures = Config.get_pictures(r'data\pets\loop\*.gif')
             if self.default_count >= 6:    # 连续播放 6 次默认动作后切换随机动作
                 self.random_action()
                 self.default_count = 0
@@ -219,6 +219,7 @@ if __name__ == '__main__':
     pet = DesktopPet()
     pet.show()
     sys.exit(app.exec_())
+
 
 
 
